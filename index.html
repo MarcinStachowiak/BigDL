@@ -1,49 +1,729 @@
 <!doctype html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<html lang="en">
 
-		<title>reveal.js</title>
+<head>
+    <meta charset="utf-8">
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+    <title>BigDL</title>
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+    <meta name="description" content="Aasr-style" content="black-translucent">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/theme/black.css" id="theme">
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
-	</body>
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+        <section>
+            <h1>BigDL</h1>
+            <h3>Distributed Deep Learning on Apache Spark</h3>
+            <p>
+                <small>Created by <a href="http://www.stachowiak.io">Marcin Stachowiak</a></small>
+            </p>
+        </section>
+
+        <section data-background="#FFFFFF">
+            <h3>Why?</h3>
+
+            <div>
+                <div class="leftContent3">
+                    <p class="fragment">grep?</p>
+                </div>
+                <div class="centerContent3">
+                    <pre class="fragment"><code class="hljs">cat file.txt | grep *.json | wc -l</code></pre>
+                    </p>
+                </div>
+                <div class="rightContent3">
+                    <img class="fragment" width="80" height="80" data-src="img/snail.png">
+                </div>
+            </div>
+            <div>
+                <div class="leftContent3">
+                    <img class="fragment" width="160" height="80" data-src="img/hadoop.png">
+                </div>
+                <div class="centerContent3">
+                    <img class="fragment" width="200" height="160" data-src="img/cluster.jpg">
+                </div>
+                <div class="rightContent3">
+                    <img class="fragment" width="180" height="130" data-src="img/gepard.jpg">
+                </div>
+            </div>
+            <div>
+                <div class="leftContent3">
+                    <img class="fragment" width="180" height="110" data-src="img/spark.png">
+                </div>
+                <div class="centerContent3">
+                    <img class="fragment" width="200" height="160" data-src="img/cluster.jpg">
+                </div>
+                <div class="rightContent3">
+                    <img class="fragment" width="180" height="140" data-src="img/car.png">
+                </div>
+            </div>
+            <aside class="notes">
+                Some notes.
+            </aside>
+        </section>
+        <section data-background="#FFFFFF">
+            <h2>Hadoop vs Spark</h2>
+            <div>
+                <div class="leftContent2">
+                    <img class="fragment" width="400" height="550" data-src="img/scala_code1.png">
+                </div>
+                <div class="rightContent2">
+                    <img class="fragment" width="400" height="80" data-src="img/scala_code2.png">
+                </div>
+            </div>
+        </section>
+        <section data-background="#FFFFFF">
+            <h3>Why Spark?</h3>
+            <div>
+                <div class="leftContent2">
+                    <img width="190" height="110" data-src="img/spark.png">
+                </div>
+                <div class="rightContent2">
+                    <p align="left" class="fragment">Readability</p>
+                    <p align="left" class="fragment">Fast</p>
+                    <p align="left" class="fragment">Testability</p>
+                    <p align="left" class="fragment">Interactive</p>
+                    <p align="left" class="fragment">Standardization</p>
+                </div>
+            </div>
+        </section>
+        <section data-background="#ffffff">
+            <div>
+                <div class="leftContent3">
+                    <img width="300" height="100" data-src="img/hadoop.png">
+                </div>
+                <div class="centerContent3">
+                    <div><img class="fragment" width="150" height="100" data-src="img/storm.png"></div>
+                    <div><img class="fragment" width="70" height="70" data-src="img/hive.png"></div>
+                    <div><img class="fragment" width="150" height="80" data-src="img/drill.jpeg"></div>
+                    <div><img class="fragment" width="150" height="80" data-src="img/impala.png"></div>
+                    <div><img class="fragment" width="150" height="66" data-src="img/scalding.png"></div>
+                    <div><img class="fragment" width="90" height="90" data-src="img/giraph.png"></div>
+                </div>
+                <div class="rightContent3">
+                    <img class="fragment" width="280" height="110" data-src="img/spark.png">
+                </div>
+            </div>
+        </section>
+
+        <section data-background="#ffffff">
+            <img width="1000" height="540" data-src="img/line_of_codes.png">
+        </section>
+        <section data-background="#ffffff">
+            <h3>Spark high level architecture</h3>
+            <img width="1000" height="300" data-src="img/spark_arch.png">
+        </section>
+
+        <section>
+            <h3>Spark Context</h3>
+            <pre><code class="hljs" data-trim contenteditable>
+            import org.apache.spark.SparkContext
+            import org.apache.spark.SparkContext._
+            import org.apache.spark.SparkConf
+
+            object SimpleApp {
+                def main(args: Array[String]) {
+                    val conf = new SparkConf().setAppName("Simple App")
+                    val sc = new SparkContext(conf)
+                }
+            }
+            </code></pre>
+        </section>
+        <section>
+            <h3>Resilient Distributed Dataset (RDD)</h3>
+            <p><i>"(...) a collection of elements partitioned across the nodes of the cluster that can be operated on in
+                parallel."</i></p>
+            <pre><code class="hljs" data-trim contenteditable>
+                val data = Array(1, 2, 3, 4, 5)
+                val data_rdd = sc.parallelize(data)
+            </code></pre>
+            <pre><code class="hljs" data-trim contenteditable>
+                val data_rdd = sc.textFile("data.txt")
+            </code></pre>
+            <aside class="notes">
+                A fault-tolerant collection of elements that can be operated on in parallel.
+            </aside>
+        </section>
+
+        <section>
+            <h3>Resilient Distributed Dataset (RDD)</h3>
+            <div class="small">
+                <p class="small"><b>Transformations:</b><br>
+                    - map<br>
+                    - filter<br>
+                    - ...
+                </p>
+                <pre><code class="hljs" data-trim contenteditable>
+                val lineLengths = data_rdd.map(s => s.length)
+            </code></pre>
+                <p class="small"><b>Actions:</b><br>
+                    - count<br>
+                    - reduce<br>
+                    - ...
+                </p>
+                <pre><code class="hljs" data-trim contenteditable>
+               val totalLength = data_rdd.reduce((a, b) => a + b)
+            </code></pre>
+            </div>
+            <aside class="notes">
+                All transformations in Spark are lazy! The DAG scheduler divides operators into stages of tasks. A stage
+                is comprised of tasks based on partitions of the input data. The DAG scheduler pipelines operators
+                together. For e.g. Many map operators can be scheduled in a single stage. The final result of a DAG
+                scheduler is a set of stages.
+            </aside>
+        </section>
+
+        <section>
+            <h3>Directed Acyclic Graph (DAG)</h3>
+            <p>DAG in Apache Spark is a set of <b>Vertices</b> and <b>Edges</b>, where vertices represent the RDDs and
+                the edges represent the Operation to be applied on RDD. </p>
+            <aside class="notes">
+                It is a strict generalization of MapReduce model. The Scheduler splits the Spark RDD into stages based
+                on various transformation applied. Each stage is comprised of tasks, based on the partitions of the RDD,
+                which will perform same computation in parallel.
+            </aside>
+        </section>
+
+        <section data-background="#ffffff">
+            <img width="1000" height="400" data-src="img/spark_arch_ext.png">
+        </section>
+
+        <section data-background="#ffffff">
+            <img data-src="img/bigdl-logo-bw.jpg">
+        </section>
+
+        <section data-background="#0071c5">
+            <p>BigDL is a distributed deep learning library for Apache Spark. With BigDL, users can write their deep
+                learning applications as standard Spark programs, which can directly run on top of existing Spark or
+                Hadoop clusters. </p>
+            <img data-src="img/Intel-AI-sqr.jpg">
+        </section>
+
+        <section data-background="#0071c5">
+            <h3>Technology and industry trends</h3>
+            <div class="small">
+                <p class="fragment small" align="left">1. Users are building more deeper and complex neural
+                    networks.</p>
+                <p class="fragment small" align="left">2. Real-world deep learning applications are complex big data
+                    pipelines.</p>
+                <p class="fragment small" align="left">3. Deep learning is increasingly adopted by the big data and data
+                    science community.</p>
+            </div>
+            <aside class="notes">
+                1. It is usually much more efficient to run the algorithm directly on the big data cluster where the
+                data are stored and shared (than copying data to a separate infrastructure).
+                2. it is much simpler and more efficient (for development and workflow management) to seamlessly
+                integrate deep learning functionalities into existing big data workflow running on the same
+                infrastructure.
+                3. Mainstream data engineers and data scientists are usually not deep learning experts.
+            </aside>
+        </section>
+
+        <section data-background="#0071c5">
+            <h3>Why BigDL?</h3>
+            <div class="small">
+                <p class="fragment small" align="left">1. Rich deep learning support (TensorFlow, Keras, Caffe and
+                    Torch).</p>
+                <p class="fragment small" align="left">2. Extremely high performance (Intel MKL).</p>
+                <p class="fragment small" align="left">3. Efficiently scale-out.</p>
+            </div>
+        </section>
+
+        <section data-background="#ffffff">
+            <img data-src="img/spark_components.png">
+        </section>
+
+        <section data-background="#0071c5">
+            <h2>Programming model</h2>
+        </section>
+
+        <section data-background="#0071c5">
+            <h3>Data transformation</h3>
+            <h5 align="left">Resilient Distributed Dataset (RDD)</h5>
+            <div class="small">
+                <p class="small">Users can efficiently load very large dataset and process the loaded data in a
+                    distributed fashion using Spark, and then feed the processed data into the analytics.</p>
+                <pre><code class="hljs" data-trim contenteditable>
+                //load input data: (text, label) pairs
+                texts_rdd = spark.textFile("hdfs://...")
+                //convert text to list of words
+                words_rdd = texts_rdd.map(lambda text, label:
+                                ([w for w in to_words(text)], label))
+            </code></pre>
+            </div>
+        </section>
+
+        <section data-background="#0071c5">
+            <h3>Data transformation</h3>
+            <h5 align="left">N-dimensional array</h5>
+            <div class="small">
+                <p class="small">The basic data elements used in neural network computations have been modeled as
+                    N-dimensional numeric (int8, float32, etc.) arrays.</p>
+                <pre><code class="hljs" data-trim contenteditable>
+                val tensor = Tensor(2, 3)
+                tensor: com.intel.analytics.bigdl.tensor.Tensor =
+                    0.0     0.0     0.0
+                    0.0     0.0     0.0
+                [com.intel.analytics.bigdl.tensor.DenseTensor of size 2x3]
+            </code></pre>
+            </div>
+        </section>
+
+        <section data-background="#0071c5">
+            <h3>Data transformation</h3>
+            <h5 align="left">Sample</h5>
+            <div class="small">
+                <p class="small">A Sample represents one record of your data set, which is comprised of feature and
+                    label.</p>
+                <pre><code class="hljs" data-trim contenteditable>
+                val image = Tensor(3, 32, 32).rand
+                val label = 1f
+                val sample = Sample(image, label)
+            </code></pre>
+            </div>
+        </section>
+
+        <section data-background="#0071c5">
+            <h3>Model construction</h3>
+            <h5 align="left">Layers</h5>
+            <div class="small">
+                <p class="small">Similar to Caffe, Torch and Keras, BigDL uses a dataflow representation for the neural
+                    network model.</p>
+                <pre><code class="hljs" data-trim contenteditable>
+                val module = Sequential()
+                module.add(Linear(10, 25))
+                module.add(Linear(25, 10))
+            </code></pre>
+            </div>
+        </section>
+
+        <section data-background="#0071c5">
+            <h3>Model training</h3>
+            <h5 align="left">Optimizer</h5>
+            <div class="small">
+                <p class="small">The distributed training process is modelled by the Optimizer abstraction, which runs
+                    multiple, iterative Spark jobs to minimize the loss.</p>
+                <pre><code class="hljs" data-trim contenteditable>
+                optimizer = Optimizer(
+                    model=lenet_model,
+                    training_rdd=train_data,
+                    criterion=ClassNLLCriterion(),
+                    optim_method=SGD(learningrate=0.01),
+                    end_trigger=MaxEpoch(15),
+                    batch_size=batch_size)
+            </code></pre>
+            </div>
+        </section>
+
+        <section data-background="#0071c5">
+            <h3>Model training</h3>
+            <h5 align="left">Visualization</h5>
+            <div class="small">
+                <p class="small">The summary data can then be visualized in TensorBoard or Jupyter Notebooks.</p>
+                <pre><code class="hljs" data-trim contenteditable>
+                optimizer.set_train_summary(summary = TrainSummary(...))
+            </code></pre>
+            </div>
+        </section>
+
+        <section data-background="#0071c5">
+            <h3>Model training</h3>
+            <h5 align="left">Transfer learning</h5>
+            <div class="small">
+                <p class="small">BigDL also allows users to directly use existing models (pre-trained by Caffe, Keras, TensorFlow, Torch or BigDL) in Spark.</p>
+                <pre><code class="hljs" data-trim contenteditable>
+                val modelPath = "/tmp/model/model.pb"
+                val binPath = "/tmp/model/model.bin"
+                val inputs = Seq("Placeholder")
+                val outputs = Seq("output")
+
+                val model = Module.loadTF(modelPath, inputs, outputs,
+                        ByteOrder.LITTLE_ENDIAN, Some(binPath))
+            </code></pre>
+            </div>
+        </section>
+
+        <section data-background="#0071c5">
+            <h2>Programming model</h2>
+        </section>
+
+        <section data-background="#ffffff">
+            <h3>Data-parallel training</h3>
+            <img width="1000" height="280" data-src="img/parallel_training.png">
+        </section>
+
+        <section data-background="#ffffff">
+            <h3>Parametr synchronization</h3>
+            <img width="1000" height="400" data-src="img/parametr_synchronization.png">
+        </section>
+
+        <section>
+            <section id="fragments">
+                <h2>Fragments</h2>
+                <p>Hit the next arrow...</p>
+                <p class="fragment">... to step through ...</p>
+                <p><span class="fragment">... a</span> <span class="fragment">fragmented</span> <span class="fragment">slide.</span>
+                </p>
+
+                <aside class="notes">
+                    This slide has fragments which are also stepped through in the notes window.
+                </aside>
+            </section>
+            <section>
+                <h2>Fragment Styles</h2>
+                <p>There's different types of fragments, like:</p>
+                <p class="fragment grow">grow</p>
+                <p class="fragment shrink">shrink</p>
+                <p class="fragment fade-out">fade-out</p>
+                <p class="fragment fade-up">fade-up (also down, left and right!)</p>
+                <p class="fragment current-visible">current-visible</p>
+                <p>Highlight <span class="fragment highlight-red">red</span> <span
+                        class="fragment highlight-blue">blue</span> <span class="fragment highlight-green">green</span>
+                </p>
+            </section>
+        </section>
+
+        <section id="transitions">
+            <h2>Transition Styles</h2>
+            <p>
+                You can select from different transitions, like: <br>
+                <a href="?transition=none#/transitions">None</a> -
+                <a href="?transition=fade#/transitions">Fade</a> -
+                <a href="?transition=slide#/transitions">Slide</a> -
+                <a href="?transition=convex#/transitions">Convex</a> -
+                <a href="?transition=concave#/transitions">Concave</a> -
+                <a href="?transition=zoom#/transitions">Zoom</a>
+            </p>
+        </section>
+
+        <section id="themes">
+            <h2>Themes</h2>
+            <p>
+                reveal.js comes with a few themes built in: <br>
+                <!-- Hacks to swap themes after the page has loaded. Not flexible and only intended for the reveal.js demo deck. -->
+                <a href="#"
+                   onclick="document.getElementById('theme').setAttribute('href','css/theme/black.css'); return false;">Black
+                    (default)</a> -
+                <a href="#"
+                   onclick="document.getElementById('theme').setAttribute('href','css/theme/white.css'); return false;">White</a>
+                -
+                <a href="#"
+                   onclick="document.getElementById('theme').setAttribute('href','css/theme/league.css'); return false;">League</a>
+                -
+                <a href="#"
+                   onclick="document.getElementById('theme').setAttribute('href','css/theme/sky.css'); return false;">Sky</a>
+                -
+                <a href="#"
+                   onclick="document.getElementById('theme').setAttribute('href','css/theme/beige.css'); return false;">Beige</a>
+                -
+                <a href="#"
+                   onclick="document.getElementById('theme').setAttribute('href','css/theme/simple.css'); return false;">Simple</a>
+                <br>
+                <a href="#"
+                   onclick="document.getElementById('theme').setAttribute('href','css/theme/serif.css'); return false;">Serif</a>
+                -
+                <a href="#"
+                   onclick="document.getElementById('theme').setAttribute('href','css/theme/blood.css'); return false;">Blood</a>
+                -
+                <a href="#"
+                   onclick="document.getElementById('theme').setAttribute('href','css/theme/night.css'); return false;">Night</a>
+                -
+                <a href="#"
+                   onclick="document.getElementById('theme').setAttribute('href','css/theme/moon.css'); return false;">Moon</a>
+                -
+                <a href="#"
+                   onclick="document.getElementById('theme').setAttribute('href','css/theme/solarized.css'); return false;">Solarized</a>
+            </p>
+        </section>
+
+        <section>
+            <section data-background="#dddddd">
+                <h2>Slide Backgrounds</h2>
+                <p>
+                    Set <code>data-background="#dddddd"</code> on a slide to change the background color. All CSS color
+                    formats are supported.
+                </p>
+                <a href="#" class="navigate-down">
+                    <img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png"
+                         alt="Down arrow">
+                </a>
+            </section>
+            <section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/image-placeholder.png">
+                <h2>Image Backgrounds</h2>
+                <pre><code class="hljs">&lt;section data-background="image.png"&gt;</code></pre>
+            </section>
+            <section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/image-placeholder.png"
+                     data-background-repeat="repeat" data-background-size="100px">
+                <h2>Tiled Backgrounds</h2>
+                <pre><code class="hljs" style="word-wrap: break-word;">&lt;section data-background="image.png" data-background-repeat="repeat" data-background-size="100px"&gt;</code></pre>
+            </section>
+            <section
+                    data-background-video="https://s3.amazonaws.com/static.slid.es/site/homepage/v1/homepage-video-editor.mp4,https://s3.amazonaws.com/static.slid.es/site/homepage/v1/homepage-video-editor.webm"
+                    data-background-color="#000000">
+                <div style="background-color: rgba(0, 0, 0, 0.9); color: #fff; padding: 20px;">
+                    <h2>Video Backgrounds</h2>
+                    <pre><code class="hljs" style="word-wrap: break-word;">&lt;section data-background-video="video.mp4,video.webm"&gt;</code></pre>
+                </div>
+            </section>
+            <section data-background="http://i.giphy.com/90F8aUepslB84.gif">
+                <h2>... and GIFs!</h2>
+            </section>
+        </section>
+
+        <section data-transition="slide" data-background="#4d7e65" data-background-transition="zoom">
+            <h2>Background Transitions</h2>
+            <p>
+                Different background transitions are available via the backgroundTransition option. This one's called
+                "zoom".
+            </p>
+            <pre><code class="hljs">Reveal.configure({ backgroundTransition: 'zoom' })</code></pre>
+        </section>
+
+        <section data-transition="slide" data-background="#b5533c" data-background-transition="zoom">
+            <h2>Background Transitions</h2>
+            <p>
+                You can override background transitions per-slide.
+            </p>
+            <pre><code class="hljs"
+                       style="word-wrap: break-word;">&lt;section data-background-transition="zoom"&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Pretty Code</h2>
+            <pre><code class="hljs" data-trim contenteditable>
+function linkify( selector ) {
+  if( supports3DTransforms ) {
+
+    var nodes = document.querySelectorAll( selector );
+
+    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
+      var node = nodes[i];
+
+      if( !node.className ) {
+        node.className += ' roll';
+      }
+    }
+  }
+}
+					</code></pre>
+            <p>Code syntax highlighting courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.
+            </p>
+        </section>
+
+        <section>
+            <h2>Marvelous List</h2>
+            <ul>
+                <li>No order here</li>
+                <li>Or here</li>
+                <li>Or here</li>
+                <li>Or here</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Fantastic Ordered List</h2>
+            <ol>
+                <li>One is smaller than...</li>
+                <li>Two is smaller than...</li>
+                <li>Three!</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Tabular Tables</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Value</th>
+                    <th>Quantity</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Apples</td>
+                    <td>$1</td>
+                    <td>7</td>
+                </tr>
+                <tr>
+                    <td>Lemonade</td>
+                    <td>$2</td>
+                    <td>18</td>
+                </tr>
+                <tr>
+                    <td>Bread</td>
+                    <td>$3</td>
+                    <td>2</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Clever Quotes</h2>
+            <p>
+                These guys come in two forms, inline: <q
+                    cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">The
+                nice thing about standards is that there are so many to choose from</q> and block:
+            </p>
+            <blockquote
+                    cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
+                &ldquo;For years there has been a theory that millions of monkeys typing at random on millions of
+                typewriters would
+                reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.&rdquo;
+            </blockquote>
+        </section>
+
+        <section>
+            <h2>Intergalactic Interconnections</h2>
+            <p>
+                You can link between slides internally,
+                <a href="#/2/3">like this</a>.
+            </p>
+        </section>
+
+        <section>
+            <h2>Speaker View</h2>
+            <p>There's a <a href="https://github.com/hakimel/reveal.js#speaker-notes">speaker view</a>. It includes a
+                timer, preview of the upcoming slide as well as your speaker notes.</p>
+            <p>Press the <em>S</em> key to try it out.</p>
+
+            <aside class="notes">
+                Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open
+                the speaker notes window (hit 's' on your keyboard).
+            </aside>
+        </section>
+
+        <section>
+            <h2>Export to PDF</h2>
+            <p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>,
+                here's an example:</p>
+            <iframe data-src="https://www.slideshare.net/slideshow/embed_code/42840540" width="445" height="355"
+                    frameborder="0" marginwidth="0" marginheight="0" scrolling="no"
+                    style="border:3px solid #666; margin-bottom:5px; max-width: 100%;" allowfullscreen></iframe>
+        </section>
+
+        <section>
+            <h2>Global State</h2>
+            <p>
+                Set <code>data-state="something"</code> on a slide and <code>"something"</code>
+                will be added as a class to the document element when the slide is open. This lets you
+                apply broader style changes, like switching the page background.
+            </p>
+        </section>
+
+        <section data-state="customevent">
+            <h2>State Events</h2>
+            <p>
+                Additionally custom events can be triggered on a per slide basis by binding to the
+                <code>data-state</code> name.
+            </p>
+            <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+Reveal.addEventListener( 'customevent', function() {
+	console.log( '"customevent" has fired' );
+} );
+					</code></pre>
+        </section>
+
+        <section>
+            <h2>Take a Moment</h2>
+            <p>
+                Press B or . on your keyboard to pause the presentation. This is helpful when you're on stage and want
+                to take distracting slides off the screen.
+            </p>
+        </section>
+
+        <section>
+            <h2>Much more</h2>
+            <ul>
+                <li>Right-to-left support</li>
+                <li><a href="https://github.com/hakimel/reveal.js#api">Extensive JavaScript API</a></li>
+                <li><a href="https://github.com/hakimel/reveal.js#auto-sliding">Auto-progression</a></li>
+                <li><a href="https://github.com/hakimel/reveal.js#parallax-background">Parallax backgrounds</a></li>
+                <li><a href="https://github.com/hakimel/reveal.js#keyboard-bindings">Custom keyboard bindings</a></li>
+            </ul>
+        </section>
+
+        <section style="text-align: left;">
+            <h1>THE END</h1>
+            <p>
+                - <a href="https://slides.com">Try the online editor</a> <br>
+                - <a href="https://github.com/hakimel/reveal.js">Source code &amp; documentation</a>
+            </p>
+        </section>
+
+    </div>
+
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+    // More info https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // More info https://github.com/hakimel/reveal.js#dependencies
+        dependencies: [
+            {
+                src: 'lib/js/classList.js', condition: function () {
+                    return !document.body.classList;
+                }
+            },
+            {
+                src: 'plugin/markdown/marked.js', condition: function () {
+                    return !!document.querySelector('[data-markdown]');
+                }
+            },
+            {
+                src: 'plugin/markdown/markdown.js', condition: function () {
+                    return !!document.querySelector('[data-markdown]');
+                }
+            },
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                    hljs.initHighlightingOnLoad();
+                }
+            },
+            {src: 'plugin/search/search.js', async: true},
+            {src: 'plugin/zoom-js/zoom.js', async: true},
+            {src: 'plugin/notes/notes.js', async: true}
+        ]
+    });
+
+</script>
+
+</body>
 </html>
